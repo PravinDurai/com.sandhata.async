@@ -13,6 +13,7 @@ public final class AsyncConstants {
 	public static final String ASYNC_PROCESSING = "async_processing";
 	public static final String ASYNC_ANNOTATION = "async_annotation";
 	public static final String REACTOR = "reactor";
+	public static final String COUNT = "count";
 
 	// General
 	public static final Boolean TRUE = true;
@@ -86,15 +87,24 @@ public final class AsyncConstants {
 	public static final String REACTOR_SERVICE = "ReactorService";
 
 	// Backend Service
+	public static final String ASYNC_BAK = "AsyncBak";
 	public static final String KAFKA_PRODUCER_SERVICE = "KafkaProducerService";
 
 	// Methods
 	// AsyncController
+	public static final String GET_ALL_EMPLOYEE_INFO_SYNC_REST = "getAllEmployeeInfoSyncRest";
 	public static final String GET_ALL_EMPLOYEE_INFO_REST = "getAllEmployeeInfoRest";
 	public static final String GET_ALL_EMPLOYEE_INFO_REACTOR = "getAllEmployeeInfoReactor";
+	public static final String GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_REST = "getAllEmployeeInfoUsingExecutorRest";
 
 	// AsyncService|ReactorService
+	public static final String GET_ALL_EMPLOYEE_INFO_SYNC_SERVICE = "getAllEmployeeInfoSyncService";
 	public static final String GET_ALL_EMPLOYEE_INFO_SERVICE = "getAllEmployeeInfoService";
+	public static final String GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SERVICE = "getAllEmployeeInfoUsingExecutorService";
+
+	// AsyncBak
+	public static final String RETRIEVE_SYNC_RESPONSE = "retrieveSyncResponse";
+	public static final String GET_ALL_USER_INFO_ASYNC_BAK = "getAllUserInfoAsyncBak";
 
 	// Kafka Producer Service
 	public static final String PUSH_MESSAGE_TO_KAFKA = "pushMessageToKafka";
