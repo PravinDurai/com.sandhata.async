@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.javafaker.Faker;
 import com.sandhata.async.backend.KafkaProducerService;
 import com.sandhata.async.constant.AsyncConstants;
 
@@ -18,6 +19,12 @@ public class AsyncUtil {
 
 	@Autowired
 	private KafkaProducerService kafkaProducerService;
+	
+	private static final Faker FAKER = Faker.instance();
+	
+	public static Faker getFaker() {
+		return FAKER;
+	}
 
 	public static Timestamp generateTimestamp() {
 		Date date = new Date();
@@ -46,6 +53,10 @@ public class AsyncUtil {
 	public void pushMessageToKafka(String transactionId, String message, String requestType)
 			throws JsonProcessingException {
 		kafkaProducerService.pushMessageToKafka(transactionId, message, requestType);
+	}
+	
+	public void sleepThread(int sleepTime) throws InterruptedException {
+		Thread.sleep(sleepTime);
 	}
 
 }

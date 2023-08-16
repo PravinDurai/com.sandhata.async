@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sandhata.async.config.AsyncConfig;
+import com.sandhata.async.config.AsyncAppConfig;
 import com.sandhata.async.constant.AsyncConstants;
 import com.sandhata.async.models.KafkaModel;
 import com.sandhata.async.util.AsyncUtil;
@@ -23,7 +23,7 @@ public class KafkaProducerService {
 	private KafkaTemplate<String, String> kafkaTemplate;
 
 	@Autowired
-	private AsyncConfig asyncConfig;
+	private AsyncAppConfig asyncConfig;
 
 	@Autowired
 	private ObjectMapper objectMapper;
