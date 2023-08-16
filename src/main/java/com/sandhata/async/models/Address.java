@@ -1,7 +1,5 @@
 package com.sandhata.async.models;
 
-import java.util.List;
-
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -19,18 +17,18 @@ import lombok.ToString;
 @NoArgsConstructor
 @JsonInclude(value = Include.NON_EMPTY, content = Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AsyncResponseModel {
-
-	private String empId;
-
-	private String firstName;
-
-	private String lastName;
+public class Address {
 	
-	private String fullName;
-
-	private Address address;
-
-	private List<String> skillSet;
+	private String addressLine1;
+	
+	private String addressLine2;
+	
+	private String county;
+	
+	private String country;
+	
+	private String postCode;
+	
+	private Contact contact;
 
 }
