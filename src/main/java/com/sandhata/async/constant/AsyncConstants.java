@@ -96,11 +96,13 @@ public final class AsyncConstants {
 	public static final String GET_ALL_EMPLOYEE_INFO_REST = "getAllEmployeeInfoRest";
 	public static final String GET_ALL_EMPLOYEE_INFO_REACTOR = "getAllEmployeeInfoReactor";
 	public static final String GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_REST = "getAllEmployeeInfoUsingExecutorRest";
+	public static final String GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SUPPLY_ASYNC_REST="getAllEmployeeInfoUsingExecutorSupplyAsyncRest";
 
 	// AsyncService|ReactorService
 	public static final String GET_ALL_EMPLOYEE_INFO_SYNC_SERVICE = "getAllEmployeeInfoSyncService";
 	public static final String GET_ALL_EMPLOYEE_INFO_SERVICE = "getAllEmployeeInfoService";
 	public static final String GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SERVICE = "getAllEmployeeInfoUsingExecutorService";
+	public static final String GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SUPPLY_ASYNC_SERVICE = "getAllEmployeeInfoUsingExecutorSupplyAsyncService";
 
 	// AsyncBak
 	public static final String RETRIEVE_SYNC_RESPONSE = "retrieveSyncResponse";

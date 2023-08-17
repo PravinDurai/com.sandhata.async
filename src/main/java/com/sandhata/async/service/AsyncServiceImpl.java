@@ -1,9 +1,11 @@
 package com.sandhata.async.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,12 +35,15 @@ public class AsyncServiceImpl implements AsyncService {
 
 	private final AsyncAppConfig asyncAppConfig;
 
+	private final Executor executor;
+
 	public AsyncServiceImpl(ObjectMapper objectMapper, AsyncBak asyncBak, AsyncUtil asyncUtil,
-			AsyncAppConfig asyncAppConfig) {
+			AsyncAppConfig asyncAppConfig, Executor executor) {
 		this.objectMapper = objectMapper;
 		this.asyncBak = asyncBak;
 		this.asyncUtil = asyncUtil;
 		this.asyncAppConfig = asyncAppConfig;
+		this.executor = executor;
 	}
 
 	@Override
@@ -75,10 +80,10 @@ public class AsyncServiceImpl implements AsyncService {
 		CompletableFuture<List<AsyncResponseModel>> asyncCompletableFuture = asyncBak
 				.getAllUserInfoAsyncBak(transactionId, count);
 
-		if (Objects.nonNull(asyncCompletableFuture.get())) {
+		if (asyncCompletableFuture.isDone()) {
 			log.info(AsyncConstants.OUT, transactionId, AsyncConstants.ASYNC_SERVICE,
 					AsyncConstants.GET_ALL_EMPLOYEE_INFO_SERVICE, AsyncConstants.TYPE, AsyncConstants.SERVICE,
-					objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(asyncCompletableFuture));
+					objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(asyncCompletableFuture.get()));
 		}
 
 		log.info(AsyncConstants.START_END, transactionId, AsyncConstants.ASYNC_SERVICE,
@@ -99,12 +104,14 @@ public class AsyncServiceImpl implements AsyncService {
 		ExecutorService executorService = Executors.newFixedThreadPool(asyncAppConfig.getMaxPoolSize().intValue());
 
 		executorService.submit(() -> {
+
 			log.info("Thread :: current thread name : {}", Thread.currentThread().getName());
 
 			CompletableFuture<List<AsyncResponseModel>> asyncCompletableFuture = asyncBak
 					.getAllUserInfoAsyncBak(transactionId, count);
 
 			if (Objects.nonNull(asyncCompletableFuture.get())) {
+
 				log.info(AsyncConstants.OUT, transactionId, AsyncConstants.ASYNC_SERVICE,
 						AsyncConstants.GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SERVICE, AsyncConstants.TYPE,
 						AsyncConstants.SERVICE,
@@ -117,6 +124,48 @@ public class AsyncServiceImpl implements AsyncService {
 
 		log.info(AsyncConstants.START_END, transactionId, AsyncConstants.ASYNC_SERVICE,
 				AsyncConstants.GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SERVICE, AsyncConstants.END);
+
+		return response;
+	}
+
+	@Override
+	public ResponseEntity<String> getAllEmployeeInfoUsingExecutorSupplyAsyncService(String transactionId, Integer count)
+			throws JsonProcessingException, InterruptedException, ExecutionException {
+		log.info(AsyncConstants.START_END, transactionId, AsyncConstants.ASYNC_SERVICE,
+				AsyncConstants.GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SUPPLY_ASYNC_SERVICE, AsyncConstants.START);
+
+		ResponseEntity<String> response = new ResponseEntity<>(null, asyncUtil.getResponseHeader(transactionId),
+				HttpStatus.ACCEPTED);
+
+		CompletableFuture<List<AsyncResponseModel>> asyncCompletableFuture = CompletableFuture.supplyAsync(() -> {
+			try {
+				return asyncBak.retrieveAsyncResponse(transactionId, count);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}, executor);
+
+		asyncCompletableFuture.whenComplete((info, err) -> {
+			if (Objects.nonNull(info) && !info.isEmpty()) {
+				try {
+					log.info(AsyncConstants.OUT, transactionId, AsyncConstants.ASYNC_SERVICE,
+							AsyncConstants.GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SUPPLY_ASYNC_SERVICE,
+							AsyncConstants.TYPE, AsyncConstants.SERVICE,
+							objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(info));
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				err.printStackTrace();
+			}
+		});
+
+		log.info(AsyncConstants.START_END, transactionId, AsyncConstants.ASYNC_SERVICE,
+				AsyncConstants.GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SUPPLY_ASYNC_SERVICE, AsyncConstants.END);
 
 		return response;
 	}
