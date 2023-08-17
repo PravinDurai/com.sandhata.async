@@ -12,12 +12,14 @@ public interface AsyncService {
 
 	public ResponseEntity<List<AsyncResponseModel>> getAllEmployeeInfoSyncService(String transactionId, int count)
 			throws JsonProcessingException, InterruptedException;
-	
+
 	public ResponseEntity<String> getAllEmployeeInfoService(String transactionId, Integer count)
 			throws JsonProcessingException, InterruptedException, ExecutionException;
-	
+
 	public ResponseEntity<String> getAllEmployeeInfoUsingExecutorService(String transactionId, Integer count)
 			throws JsonProcessingException, InterruptedException, ExecutionException;
 
+	public ResponseEntity<String> getAllEmployeeInfoUsingExecutorSupplyAsyncService(String transactionId, Integer count)
+			throws JsonProcessingException, InterruptedException, ExecutionException;
 
 }
