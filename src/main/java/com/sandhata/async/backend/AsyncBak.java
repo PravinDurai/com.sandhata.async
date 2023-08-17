@@ -84,6 +84,12 @@ public class AsyncBak {
 
 		asyncResponseModel.setAddress(address);
 
+		List<String> skillSet = new ArrayList<>();
+		skillSet.add(faker.job().keySkills());
+		skillSet.add(faker.job().keySkills());
+
+		asyncResponseModel.setSkillSet(skillSet);
+
 		asyncUtil.sleepThread(asyncConfig.getSleepTime().intValue());
 
 		return asyncResponseModel;

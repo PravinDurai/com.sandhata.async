@@ -122,6 +122,33 @@ public class AsyncController {
 		return response;
 	}
 
+	@GetMapping(value = "/annotation/executor/supply-async/all-employee", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<String> getAllEmployeeInfoUsingExecutorSupplyAsyncRest(
+			@RequestHeader(value = AsyncConstants.TRANSACTION_ID, required = true) String transactionId,
+			@RequestParam(value = AsyncConstants.COUNT, required = true) Integer count)
+			throws JsonProcessingException, InterruptedException, ExecutionException {
+
+		log.info(AsyncConstants.START_END, transactionId, AsyncConstants.ASYNC_CONTROLLER,
+				AsyncConstants.GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SUPPLY_ASYNC_REST, AsyncConstants.START);
+
+		ResponseEntity<String> response = asyncService.getAllEmployeeInfoUsingExecutorSupplyAsyncService(transactionId,
+				count);
+
+		asyncUtil.pushMessageToKafka(transactionId,
+				objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(response),
+				AsyncConstants.RESPONSE_OUT);
+
+		log.info(AsyncConstants.OUT, transactionId, AsyncConstants.ASYNC_CONTROLLER,
+				AsyncConstants.GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SUPPLY_ASYNC_REST, AsyncConstants.TYPE,
+				AsyncConstants.REST, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(response));
+
+		log.info(AsyncConstants.START_END, transactionId, AsyncConstants.ASYNC_CONTROLLER,
+				AsyncConstants.GET_ALL_EMPLOYEE_INFO_USING_EXECUTOR_SUPPLY_ASYNC_REST, AsyncConstants.END);
+
+		return response;
+	}
+
 	@GetMapping(value = "/reactor/all-employee", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<Flux<AsyncResponseModel>> getAllEmployeeInfoReactor(
