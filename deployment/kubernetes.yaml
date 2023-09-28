@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-async
+  labels:
+    app: springboot-async
+spec:
+  selector:
+    matchLabels:
+      app: springboot-async
+  template:
+    metadata:
+      labels:
+        app: springboot-async
+    spec:
+      containers:
+      - name: springboot-async
+        image: pravinsm94/springboot-async
+        ports:
+        - containerPort: 9095
